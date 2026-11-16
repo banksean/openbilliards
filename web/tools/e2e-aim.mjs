@@ -553,6 +553,30 @@ try {
     }
   }
 
+  // Shift+wheel while AIMING belongs to orbit zoom, not shot power. Desktop
+  // browsers commonly translate that gesture to deltaX with deltaY=0; pin
+  // the translated event shape that previously made the gesture a no-op.
+  {
+    const before = await chrome.eval(`({
+      radius: __dbg.orbit.state.radius,
+      power: document.getElementById('power').value,
+    })`);
+    await chrome.eval(`document.querySelector('body > canvas').dispatchEvent(
+      new WheelEvent('wheel', { deltaX: -240, deltaY: 0, shiftKey: true,
+        bubbles: true, cancelable: true }))`);
+    await sleep(50);
+    const after = await chrome.eval(`({
+      radius: __dbg.orbit.state.radius,
+      power: document.getElementById('power').value,
+    })`);
+    if (!(after.radius < before.radius * 0.95)) {
+      fail(`shift+wheel translated delta did not zoom while aiming (radius ${before.radius} → ${after.radius})`);
+    }
+    if (after.power !== before.power) {
+      fail(`shift+wheel changed shot power while aiming (${before.power} → ${after.power})`);
+    }
+  }
+
   // ---- issue #69: camera controllable in EVERY state. The orbit.js
   // handlers are state-free by design and aim.js yields its claims outside
   // aiming(); this arm PINS that behavior: right-drag orbit + wheel zoom +
