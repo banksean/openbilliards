@@ -108,7 +108,12 @@ export function createOrbit(camera, dom, {
     // the aim view first (mirrors the pointerdown branches; no-op when
     // the aim view is not engaged or the seam is absent)
     try { window.__aim?.setAimView?.(false); } catch { /* seam absent */ }
-    s.radius *= Math.exp(e.deltaY * 0.001);
+    // Browsers commonly translate Shift+vertical-wheel into horizontal
+    // scrolling (deltaX != 0, deltaY == 0). aim.js deliberately yields
+    // Shift+wheel to this handler, so recover that translated delta here;
+    // an actual unmodified horizontal gesture remains inert.
+    const delta = e.deltaY || (e.shiftKey ? e.deltaX : 0);
+    s.radius *= Math.exp(delta * 0.001);
     apply();
     e.preventDefault();
   }, { passive: false });
