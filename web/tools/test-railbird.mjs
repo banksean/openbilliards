@@ -42,7 +42,7 @@ assert.deepEqual(
 assert.deepEqual(
   converted.layout.find((b) => b.id === 0),
   {
-    id: 0, x: table.width / 2 - radius, y: -table.length / 2 + radius,
+    id: 0, x: table.width / 2 - radius, y: table.length / 2 - radius,
     railbirdId: 7, isCueBall: true,
     source: { x: 200, y: 200 }, clamped: true,
   },

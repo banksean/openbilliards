@@ -74,7 +74,9 @@ export function convertRailbirdShot(shot, table, radius) {
     const v = (path.restPoint.y - RAILBIRD_BOUNDS.top)
       / (RAILBIRD_BOUNDS.bottom - RAILBIRD_BOUNDS.top);
     const rawX = (0.5 - v) * table.width;
-    const rawY = (u - 0.5) * table.length;
+    // Railbird image x increases toward the renderer's NEGATIVE long axis.
+    // Keeping the old positive sign mirrored every imported layout end-to-end.
+    const rawY = (0.5 - u) * table.length;
     const x = Math.max(minX, Math.min(maxX, rawX));
     const y = Math.max(minY, Math.min(maxY, rawY));
     if (x !== rawX || y !== rawY) clamped += 1;
