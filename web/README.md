@@ -11,6 +11,20 @@ Chrome's module/CORS rules):
 
     python3 -m http.server -d web 8000   # open http://localhost:8000/app.html
 
+### Railbird inferred-layout viewer
+
+The opt-in Railbird adapter renders the starting positions (`cleanPaths[*].restPoint`)
+from an export produced by that separate video-inference application. Serve the
+repository root when the JSON also lives at the repository root:
+
+    python3 -m http.server -d . 8000
+    # open http://localhost:8000/web/app.html?railbird=/railbird-example.json&shot=0
+
+The viewer is read-only. Previous/next controls update the zero-based `shot`
+query parameter. Railbird tracking ids are mapped deterministically to numbered
+visual aliases and disclosed in the viewer; they are not treated as inferred
+pool-ball identities. Other origins work when their server permits CORS.
+
 Controls: left-drag on the table aims (drag the cue ball itself when you
 have ball in hand), right-drag / shift-drag orbits, wheel zooms. HUD: power
 0.5–9 m/s, elevation 0–80° (ELEVATION_MAX_DEG in `app/aimwidgets.js`) with a

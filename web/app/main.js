@@ -945,6 +945,19 @@ async function boot() {
   const seed = Number.isSafeInteger(rawSeed) && rawSeed >= 0
     && rawSeed <= MAX_RACK_SEED ? rawSeed : 1;
   const bootRackError = bootRack(game, seed);
+  // Opt-in adapter for exports from the unrelated Railbird video-inference
+  // application. Keep it off the normal boot graph: without ?railbird the
+  // module, stylesheet and data are never requested. The initial rack must
+  // exist before the adapter can borrow game.layout() and its table truth.
+  const railbirdUrl = bootQ.get('railbird');
+  if (railbirdUrl) {
+    import('./railbird.js').then((m) => m.createRailbirdViewer?.({
+      game,
+      sourceUrl: railbirdUrl,
+      initialShot: bootQ.get('shot') ?? 0,
+      reportError,
+    })).catch((e) => reportError(`Railbird viewer unavailable: ${e?.message ?? e}`));
+  }
   // the kernel table the sim uses must match the rendered scene numbers.
   // NOTE the gate compares against a DEFAULT-equipment template: persisted
   // non-default equipment (snooker balls etc.) legitimately re-racks at a

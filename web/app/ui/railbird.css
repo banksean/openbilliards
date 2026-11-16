@@ -1,0 +1,39 @@
+/* Opt-in Railbird layout viewer. Loaded only by app/railbird.js. */
+html.ob-railbird-mode #hud,
+html.ob-railbird-mode #help,
+html.ob-railbird-mode #ob-toolbar,
+html.ob-railbird-mode #banner { display: none !important; }
+
+#ob-railbird {
+  position: fixed;
+  z-index: 30;
+  top: var(--ob-sp-4, 16px);
+  left: var(--ob-sp-4, 16px);
+  width: min(340px, calc(100vw - 32px));
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  padding: var(--ob-sp-4, 16px);
+  box-sizing: border-box;
+  color: var(--ob-text-0, #efe9d8);
+}
+
+#ob-railbird .ob-rb-head,
+#ob-railbird .ob-rb-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--ob-sp-2, 8px);
+}
+
+#ob-railbird .ob-rb-actions { justify-content: flex-end; }
+#ob-railbird .ob-rb-actions .ob-btn { min-width: 40px; padding-inline: 12px; }
+#ob-railbird #ob-rb-shot { margin-top: 4px; opacity: .75; }
+#ob-railbird #ob-rb-status { margin: 12px 0; line-height: 1.4; }
+#ob-railbird details { border-top: 1px solid color-mix(in srgb, currentColor 18%, transparent); padding-top: 10px; }
+#ob-railbird summary { cursor: pointer; }
+#ob-railbird #ob-rb-legend { margin-top: 8px; display: grid; gap: 3px; font-size: 12px; opacity: .8; }
+#ob-railbird.ob-rb-error #ob-rb-status { color: var(--ob-danger, #e7785f); }
+
+@media (pointer: coarse) {
+  #ob-railbird .ob-rb-actions .ob-btn { min-width: 44px; min-height: 44px; }
+}
